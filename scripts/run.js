@@ -3,8 +3,8 @@ const main = async () => {
     "MyEpicNFT.sol"
   );
   const nftContract = await nftContractFactory.deploy();
-  //   await nftContract.deployed();
-  //   console.log("Contract deployed to:", nftContract.address);
+  await nftContract.deployed();
+  console.log("Contract deployed to:", nftContract.address);
 };
 const runMain = async () => {
   try {
