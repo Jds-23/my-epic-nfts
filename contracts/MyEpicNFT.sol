@@ -1,11 +1,36 @@
-// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.8.0;
 
-pragma solidity ^0.8.0;
+// We first import some OpenZeppelin Contracts.
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "hardhat/console.sol"; 
 
-import "hardhat/console.sol";
+// We inherit the contract we imported. This means we'll have access
+// to the inherited contract's methods.
+contract MyEpicNFT is ERC721URIStorage {
+  // Magic given to us by OpenZeppelin to help us keep track of tokenIds.
+  using Counters for Counters.Counter;
+  Counters.Counter private _tokenIds;
 
-contract MyEpicNFT{
-    constructor(){
-        console.log("This the jds, first NFT! HA HA HA");
-    }
+  // We need to pass the name of our NFTs token and it's symbol.
+  constructor() ERC721 ("JdsNFT", "JDS") {
+    console.log("This is the JDS's NFT contract. Hehe boi!");
+  }
+
+  // A function our user will hit to get their NFT.
+  function makeAnEpicNFT() public {
+     // Get the current tokenId, this starts at 0.
+    uint256 newItemId = _tokenIds.current();
+
+     // Actually mint the NFT to the sender using msg.sender.
+    _safeMint(msg.sender, newItemId);
+
+    // Set the NFTs data.
+    _setTokenURI(newItemId, "https://jsonkeeper.com/b/EF87");
+
+    console.log("An NFT w/ ID %s has been minted to %s", newItemId, msg.sender);
+
+    // Increment the counter for when the next NFT is minted.
+    _tokenIds.increment();
+  }
 }
